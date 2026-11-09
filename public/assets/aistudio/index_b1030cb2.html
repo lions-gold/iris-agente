@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block contenido %}
+<div class="card">
+  <h3>Nueva referencia</h3>
+  <form method="post" action="{{ url_for('nueva_referencia') }}">
+    <input name="codigo" placeholder="Codigo (ej. 51-22)" required>
+    <input name="descripcion" placeholder="Descripcion (ej. Jean casual)" required size="30">
+    <button class="azul">Crear</button>
+  </form>
+</div>
+<h3>Referencias en bodega</h3>
+<table>
+  <tr><th>Referencia</th><th>Descripcion</th><th>Total disponible</th></tr>
+  {% for r in referencias %}
+  <tr>
+    <td><a href="{{ url_for('ver_referencia', ref_id=r.id) }}">{{ r.codigo }}</a></td>
+    <td>{{ r.descripcion }}</td>
+    <td>{{ r.total }}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="3">Aun no hay referencias.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

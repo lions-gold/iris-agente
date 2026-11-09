@@ -1,0 +1,33 @@
+version: '3.8'
+
+# =============================================================
+# DOCKER COMPOSE - Iris AI & StockLlave System
+# One-command orchestration for Local & Cloud Deployments
+# Creador: Carlos Smith Zambrano Gonzalez
+# =============================================================
+
+services:
+  iris-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: iris_stockllave_engine
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - iris_data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  iris_data:
+    driver: local

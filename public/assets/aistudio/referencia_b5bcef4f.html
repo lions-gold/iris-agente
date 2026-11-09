@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h2>{{ ref.codigo }} - {{ ref.descripcion }}</h2>
+<table>
+  <tr>{% for f in stock %}<th>Talla {{ f.talla }}</th>{% endfor %}<th>TOTAL</th></tr>
+  <tr>{% for f in stock %}<td>{{ f.cantidad }}</td>{% endfor %}<td><b>{{ total }}</b></td></tr>
+</table>
+<div class="card" style="margin-top:20px">
+  <h3>Registrar movimiento</h3>
+  <form method="post" action="{{ url_for('mover', ref_id=ref.id) }}">
+    <div class="tallas">
+      {% for t in tallas %}
+        Talla {{ t }}: <input type="number" min="0" name="talla_{{ t }}">
+      {% endfor %}
+    </div>
+    <p><input name="nota" placeholder="Nota (ej. paquete para tienda norte)" size="40"></p>
+    <button class="entrada" name="tipo" value="ENTRADA">Entrada</button>
+    <button class="salida" name="tipo" value="SALIDA">Salida</button>
+  </form>
+</div>
+<h3>Historial</h3>
+<table>
+  <tr><th>Fecha</th><th>Tipo</th><th>Talla</th><th>Cantidad</th><th>Nota</th></tr>
+  {% for m in movs %}
+  <tr><td>{{ m.fecha }}</td><td>{{ m.tipo }}</td><td>{{ m.talla }}</td><td>{{ m.cantidad }}</td><td>{{ m.nota }}</td></tr>
+  {% else %}
+  <tr><td colspan="5">Sin movimientos todavia.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
